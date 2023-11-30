@@ -2,22 +2,23 @@ import { render, screen } from '@testing-library/react';
 
 import App from './App';
 
-// render method:
-// creates simulated DOM for argument component
-// once rendered simulated DOM can be accessed via global object called screen
-// getByText - is a method from screen (it is looking at simulated DOM and trying to find an element
-// what matches the text that we give it)
+// import { logRoles } from '@testing-library/react';
 
-test('App contains correct heading', () => {
+// logRoles - This helper function can be used to print out a list of all the implicit ARIA
+//roles within a tree of DOM nodes, each role containing a list of all of the nodes which
+// match that role
+// example:  const { container } = render(<App />);
+// logRoles(container);
+test('button starts with correct color', () => {
   render(<App />);
-  const headingElement = screen.getByRole('heading', { name: /learn react/i });
 
-  // assertion which determines if test pass or fail
-  // (linkElement) - expect argument(subject of the assertion)
-  // .toBeInTheDocument() - matcher (type of assertion), it can have argument which refines matcher
-  expect(headingElement).toBeInTheDocument();
+  const buttonElement = screen.getByRole('button', { name: /blue/i });
+
+  expect(buttonElement).toHaveClass('red');
 });
 
-// /learn react/i - this is a regular expression (i means case insensitive )
-// with regulat expression it can be partial match
-// but if string is used it has to be an exact match
+test('button starts with correct text', () => {});
+
+test('button has correct colorv after click', () => {});
+
+test('button has correct text after click', () => {});
