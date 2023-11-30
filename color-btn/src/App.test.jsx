@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 
 import App from './App';
 
@@ -9,16 +9,23 @@ import App from './App';
 // match that role
 // example:  const { container } = render(<App />);
 // logRoles(container);
-test('button starts with correct color', () => {
+
+test('button click flow', () => {
+  //render app
   render(<App />);
 
+  //find the btn
   const buttonElement = screen.getByRole('button', { name: /blue/i });
 
+  // check initial color
   expect(buttonElement).toHaveClass('red');
+
+  //click the btn
+  fireEvent.click(buttonElement);
+
+  //check the btn
+  expect(buttonElement).toHaveTextContent(/red/i);
+
+  // check the btn color
+  expect(buttonElement).toHaveClass('blue');
 });
-
-test('button starts with correct text', () => {});
-
-test('button has correct colorv after click', () => {});
-
-test('button has correct text after click', () => {});
