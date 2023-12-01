@@ -1,9 +1,6 @@
 const vitest = require('eslint-plugin-vitest');
 
 module.exports = {
-  globals: {
-    ...vitest.environments.env.globals,
-  },
   root: true,
   env: { browser: true, es2020: true },
   extends: [
@@ -23,6 +20,9 @@ module.exports = {
     'no-unused-vars': 'warn', // warning, not error
     'vitest/expect-expect': 'off', // eliminate distracting red squiggles while writing tests
     'react/prop-types': 'off', // turn off props validation
+  },
+  globals: {
+    ...vitest.environments.env.globals,
   },
 };
 
