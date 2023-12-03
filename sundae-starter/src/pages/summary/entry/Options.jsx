@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 
+import Row from 'react-bootstrap/Row';
 import ScoopOption from './ScoopOption';
 import axios from 'axios';
 
@@ -23,7 +24,7 @@ const Options = ({ optionType }) => {
     <ItemComponent key={item.name} name={item.name} imagePath={item.imagePath} />
   ));
 
-  return <div>{optionItems}</div>;
+  return <Row>{optionItems}</Row>;
 };
 
 export default Options;
