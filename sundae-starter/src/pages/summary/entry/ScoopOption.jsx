@@ -1,4 +1,4 @@
-const ScoopOption = () => {
+const ScoopOption = ({ name, imagePath }) => {
   return <div>ScoopOption</div>;
 };
 
