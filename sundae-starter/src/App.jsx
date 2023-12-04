@@ -1,4 +1,4 @@
-import SummaryForm from './pages/summary/SummaryForm';
+import SummaryForm from './pages/SummaryForm';
 
 function App() {
   return (
