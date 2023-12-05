@@ -1,5 +1,5 @@
 import { HttpResponse, http } from 'msw';
-import { logRoles, render, screen } from '@testing-library/react';
+import { logRoles, render, screen } from '../../../test-utils/testing-library-utils';
 
 import OrderEntry from '../OrderEntry';
 import { server } from '../../../mocks/server';
