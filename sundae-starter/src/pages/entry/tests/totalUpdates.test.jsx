@@ -41,7 +41,6 @@ test('update toppings subtotal when toppings change', async () => {
   expect(toppingsSubtotal).toHaveTextContent('0.00');
 
   const cherriesCheckbox = await screen.findByRole('checkbox', { name: 'Cherries' });
-
   await user.click(cherriesCheckbox);
 
   expect(toppingsSubtotal).toHaveTextContent('1.50');
@@ -75,7 +74,6 @@ describe('grand total', () => {
 
     const cherriesCheckbox = await screen.findByRole('checkbox', { name: 'Cherries' });
     await user.click(cherriesCheckbox);
-
     expect(grandTotal).toHaveTextContent('5.50');
   });
 
@@ -83,13 +81,12 @@ describe('grand total', () => {
     const user = userEvent.setup();
     render(<OrderEntry />);
     const grandTotal = screen.getByRole('heading', { name: /Grand total: \$/i });
+
     const cherriesCheckbox = await screen.findByRole('checkbox', { name: 'Cherries' });
     await user.click(cherriesCheckbox);
-
     expect(grandTotal).toHaveTextContent('1.50');
 
     const vanillaInput = await screen.findByRole('spinbutton', { name: 'Vanilla' });
-
     await user.clear(vanillaInput);
     await user.type(vanillaInput, '1');
     expect(grandTotal).toHaveTextContent('3.50');
@@ -109,7 +106,6 @@ describe('grand total', () => {
 
     await user.clear(vanillaInput);
     await user.type(vanillaInput, '1');
-
     expect(grandTotal).toHaveTextContent('3.50');
 
     await user.click(cherriesCheckbox);
