@@ -2,12 +2,26 @@ import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import { useOrderDetails } from '../../contexts/OrderDetails';
+import { useState } from 'react';
 
 const ScoopOption = ({ name, imagePath }) => {
   const { updateItemCount } = useOrderDetails();
+  const [isValid, setIsValid] = useState(true);
 
   const handleChange = (e) => {
-    updateItemCount(name, parseInt(e.target.value), 'scoops');
+    const currentValue = e.target.value;
+
+    // make sure we're using a number and not string to validate
+    const currentValueFloat = parseFloat(currentValue);
+
+    // check if value is valid (not negative, less than 10, doesnt have a decimal)
+    const valueIsValid =
+      0 <= currentValueFloat && currentValueFloat <= 10 && Math.floor(currentValueFloat) === currentValueFloat;
+
+    // validate
+    setIsValid(valueIsValid);
+
+    updateItemCount(name, parseInt(currentValue), 'scoops');
   };
 
   return (
@@ -18,7 +32,7 @@ const ScoopOption = ({ name, imagePath }) => {
           {name}
         </Form.Label>
         <Col xs="5" style={{ textAlign: 'left' }}>
-          <Form.Control type="number" defaultValue={0} onChange={handleChange} />
+          <Form.Control type="number" defaultValue={0} onChange={handleChange} isInvalid={!isValid} />
         </Col>
       </Form.Group>
     </Col>
@@ -26,3 +40,6 @@ const ScoopOption = ({ name, imagePath }) => {
 };
 
 export default ScoopOption;
+
+// isInvalid={!isValid} => this prop is going to be oppsite from isValid value
+// if isValid= true, then isInvalid= false
