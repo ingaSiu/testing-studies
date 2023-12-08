@@ -82,3 +82,68 @@ test('Order phases for happy path', async () => {
   const toppingsTotal = await screen.findByText('Toppings total: $0.00');
   expect(toppingsTotal).toBeInTheDocument();
 });
+
+test('Toppings header is not on summary page if no toppings are ordered', async () => {
+  const user = userEvent.setup();
+  render(<App />);
+
+  // order only scoops
+  const vanillaInput = await screen.findByRole('spinbutton', { name: 'Vanilla' });
+  await user.clear(vanillaInput);
+  await user.type(vanillaInput, '1');
+
+  const chocolateInput = await screen.findByRole('spinbutton', { name: 'Chocolate' });
+  await user.clear(chocolateInput);
+  await user.type(chocolateInput, '2');
+  //confirm order
+
+  const orderSummaryBtn = screen.getByRole('button', { name: /order sundae/i });
+  await user.click(orderSummaryBtn);
+
+  // check the summary page for scoops
+  const summaryHeading = screen.getByRole('heading', { name: 'Order Summary' });
+  expect(summaryHeading).toBeInTheDocument();
+
+  const scoopsHeading = screen.getByRole('heading', { name: 'Scoops: $6.00' });
+  expect(scoopsHeading).toBeInTheDocument();
+
+  // check summary options for toppings
+  expect(screen.getByText('1 Vanilla')).toBeInTheDocument();
+  expect(screen.getByText('2 Chocolate')).toBeInTheDocument();
+
+  // check if toppings header doesnt exist
+  const toppingsHeading = screen.queryByRole('heading', { name: /toppings/i });
+  expect(toppingsHeading).not.toBeInTheDocument();
+});
+
+test('Toppings header is not on summary page if toppings ordered, then removed', async () => {
+  const user = userEvent.setup();
+  render(<App />);
+
+  // add order: scoops + toppings
+  const vanillaInput = await screen.findByRole('spinbutton', { name: 'Vanilla' });
+  await user.clear(vanillaInput);
+  await user.type(vanillaInput, '2');
+
+  const cherriesCheckbox = await screen.findByRole('checkbox', { name: 'Cherries' });
+  await user.click(cherriesCheckbox);
+  expect(cherriesCheckbox).toBeChecked();
+
+  const toppingsTotal = screen.getByText('Toppings total: $', { exact: false });
+  expect(toppingsTotal).toHaveTextContent('1.50');
+  // remove toppings from order
+  await user.click(cherriesCheckbox);
+  expect(cherriesCheckbox).not.toBeChecked();
+  expect(toppingsTotal).toHaveTextContent('0.00');
+
+  // confirm order
+  const orderSummaryBtn = screen.getByRole('button', { name: /order sundae/i });
+  await user.click(orderSummaryBtn);
+
+  // check summary details: scoops should bve shown, toppings not
+  const scoopsHeading = screen.getByRole('heading', { name: 'Scoops: $4.00' });
+  expect(scoopsHeading).toBeInTheDocument();
+
+  const toppingsHeading = screen.queryByRole('heading', { name: /toppings/i });
+  expect(toppingsHeading).not.toBeInTheDocument();
+});
