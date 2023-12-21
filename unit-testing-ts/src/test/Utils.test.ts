@@ -1,7 +1,7 @@
 import { StringUtils, getStringInfo, toUpperCase } from '../app/Utils';
 
 describe('Utils test suite', () => {
-  describe.only('StringUtils tests', () => {
+  describe('StringUtils tests', () => {
     let sut: StringUtils;
 
     // at every test we initialize a new class to make sure that every test is independent
@@ -21,6 +21,36 @@ describe('Utils test suite', () => {
 
       expect(actual).toBe('ABC');
       console.log('Actual test');
+    });
+
+    // testing for errors
+
+    it('Should throw error on invalid argument - function', () => {
+      const expectError = () => {
+        const actual = sut.toUpperCase('');
+      };
+
+      expect(expectError).toThrow();
+      expect(expectError).toThrowError('Invalid argument!');
+    });
+
+    it('Should throw error on invalid argument - arrow function', () => {
+      expect(() => {
+        sut.toUpperCase('');
+      }).toThrow();
+    });
+
+    // done() is a workaround for bug, because if you dont throw error the try catch blocks tests would
+    // still pass, so as argument add done and test will fail
+    it('Should throw error on invalid argument - try catch block', (done) => {
+      try {
+        sut.toUpperCase('');
+        done('GetStringInfo should throw error for invalid arg!');
+      } catch (error) {
+        expect(error).toBeInstanceOf(Error);
+        expect(error).toHaveProperty('message', 'Invalid argument!');
+        done();
+      }
     });
   });
 
