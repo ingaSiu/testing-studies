@@ -14,7 +14,36 @@ describe('Utils test suite', () => {
     expect(actual).toBe(expected);
   });
 
-  it.only('Should return information for valid string', () => {
+  describe('getStringInfo for arg My-String should', () => {
+    test('return right length', () => {
+      const actual = getStringInfo('My-String');
+      expect(actual.characters).toHaveLength(9);
+    });
+    test('return right lowercase', () => {
+      const actual = getStringInfo('My-String');
+      expect(actual.lowerCase).toBe('my-string');
+    });
+    test('return right uppercase', () => {
+      const actual = getStringInfo('My-String');
+      expect(actual.upperCase).toBe('MY-STRING');
+    });
+    test('return right characters', () => {
+      const actual = getStringInfo('My-String');
+      expect(actual.characters).toEqual(['M', 'y', '-', 'S', 't', 'r', 'i', 'n', 'g']);
+      expect(actual.characters).toContain<string>('M');
+      expect(actual.characters).toEqual(expect.arrayContaining(['S', 't', 'r', 'i', 'n', 'g', 'M', 'y', '-']));
+    });
+    test('return defined extra info', () => {
+      const actual = getStringInfo('My-String');
+      expect(actual.extraInfo).toBeDefined();
+    });
+    test('return right extra info', () => {
+      const actual = getStringInfo('My-String');
+      expect(actual.extraInfo).toEqual({});
+    });
+  });
+
+  it.skip('Should return information for valid string', () => {
     const actual = getStringInfo('My-String');
 
     // use toBe then comparing primitive values
@@ -27,7 +56,6 @@ describe('Utils test suite', () => {
 
     expect(actual.characters).toEqual(['M', 'y', '-', 'S', 't', 'r', 'i', 'n', 'g']);
     expect(actual.characters).toContain<string>('M');
-
     expect(actual.characters).toEqual(expect.arrayContaining(['S', 't', 'r', 'i', 'n', 'g', 'M', 'y', '-']));
 
     // check object definition
