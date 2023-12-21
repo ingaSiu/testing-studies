@@ -1,6 +1,29 @@
-import { getStringInfo, toUpperCase } from '../app/Utils';
+import { StringUtils, getStringInfo, toUpperCase } from '../app/Utils';
 
 describe('Utils test suite', () => {
+  describe.only('StringUtils tests', () => {
+    let sut: StringUtils;
+
+    // at every test we initialize a new class to make sure that every test is independent
+    // beforeEach, afterEach are Jest hooks
+    // afterEach hook is mostly used for clearing mocks
+    beforeEach(() => {
+      sut = new StringUtils();
+      console.log('Setup');
+    });
+
+    afterEach(() => {
+      console.log('Teardown');
+    });
+
+    it('Should return correct uppercase', () => {
+      const actual = sut.toUpperCase('abc');
+
+      expect(actual).toBe('ABC');
+      console.log('Actual test');
+    });
+  });
+
   // example of a proper structure unit test
   it('Should return uppercase of valid string', () => {
     // arrange
@@ -14,6 +37,7 @@ describe('Utils test suite', () => {
     expect(actual).toBe(expected);
   });
 
+  // when we have a lot of use cases to test
   describe('ToUpperCase exaples', () => {
     it.each([
       { input: 'abc', expected: 'ABC' },
