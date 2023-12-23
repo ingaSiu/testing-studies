@@ -1,10 +1,43 @@
-import { calculateComplexity, toUpperCaseWithCallback } from '../../app/doubles/OtherUtils';
+import { OtherStringUtils, calculateComplexity, toUpperCaseWithCallback } from '../../app/doubles/OtherUtils';
 
 import { toUpperCase } from '../../app/Utils';
 
-describe('OtherUtils test suite', () => {
-  // mocks - examples
+// Spies vs mocks
+// - spies are not directly injected into SUT
+// - Original functionality is preserved with spies
+// - Spies usually track method calls
+// - with mocks original functionality is lost and we are using a differnct object,
+//  which has its own functionality
 
+describe('OtherUtils test suite', () => {
+  describe('OtherStringUnitls tests with spies', () => {
+    let sut: OtherStringUtils;
+
+    beforeEach(() => {
+      sut = new OtherStringUtils();
+    });
+
+    test('Use spy to track calls', () => {
+      const toUpperCaseSpy = jest.spyOn(sut, 'toUpperCase');
+      sut.toUpperCase('asa');
+      expect(toUpperCaseSpy).toHaveBeenCalledWith('asa');
+    });
+
+    test('Use spy to track calls to other module', () => {
+      const consoleLogSpy = jest.spyOn(console, 'log');
+      sut.logString('abc');
+      expect(consoleLogSpy).toHaveBeenCalledWith('abc');
+    });
+
+    test('Use spy to replace the implementation of a method', () => {
+      jest.spyOn(sut, 'callExternalService').mockImplementation(() => {
+        console.log('calling mocked implementation');
+      });
+      sut.callExternalService();
+    });
+  });
+
+  // mocks - examples
   const callBackMock = jest.fn();
 
   afterEach(() => {
