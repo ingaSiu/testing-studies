@@ -31,7 +31,7 @@ describe('Utils test suite', () => {
       };
 
       expect(expectError).toThrow();
-      expect(expectError).toThrowError('Invalid argument!');
+      expect(expectError).toThrow('Invalid argument!');
     });
 
     it('Should throw error on invalid argument - arrow function', () => {
