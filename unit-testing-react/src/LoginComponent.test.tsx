@@ -1,9 +1,9 @@
-import { render, screen } from '@testing-library/react';
+/* eslint-disable testing-library/no-unnecessary-act */
+
+import { act, fireEvent, render, screen } from '@testing-library/react';
 
 import LoginComponent from './LoginComponent';
-
-// const linkElement = screen.getByText(/learn react/i);
-// expect(linkElement).toBeInTheDocument();
+import user from '@testing-library/user-event';
 
 describe('Login component tests', () => {
   const loginServiceMock = {
@@ -45,5 +45,27 @@ describe('Login component tests', () => {
     expect(inputs[0].value).toBe('');
     expect(inputs[1].value).toBe('');
     expect(inputs[2].value).toBe('Login');
+  });
+
+  it('click login button with incomplete credentials - show required message', () => {
+    const inputs = screen.getAllByTestId('input');
+    const loginButton = inputs[2];
+
+    fireEvent.click(loginButton);
+
+    const resultLabel = screen.getByTestId('resultLabel');
+    expect(resultLabel.textContent).toBe('UserName and password required!');
+  });
+
+  it('click login button with incomplete credentials - show required message - with user click', () => {
+    const inputs = screen.getAllByTestId('input');
+    const loginButton = inputs[2];
+
+    act(() => {
+      user.click(loginButton);
+    });
+
+    const resultLabel = screen.getByTestId('resultLabel');
+    expect(resultLabel.textContent).toBe('UserName and password required!');
   });
 });
