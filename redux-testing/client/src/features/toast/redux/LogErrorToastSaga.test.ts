@@ -16,3 +16,17 @@ const errorToastAction = {
 test('saga calls analytics when it receives error toast', () => {
   return expectSaga(logErrorToast, errorToastAction).call(sendToAnalytics, "It's time to panic!!!").run();
 });
+
+const infoToastOptions: ToastOptions = {
+  title: "It's not time to panic",
+  status: 'info',
+};
+
+const infoToastAction = {
+  title: 'test',
+  payload: infoToastOptions,
+};
+
+test('saga does not call analytics when it receives info toast', () => {
+  return expectSaga(logErrorToast, infoToastAction).not.call.fn(sendToAnalytics).run();
+});
